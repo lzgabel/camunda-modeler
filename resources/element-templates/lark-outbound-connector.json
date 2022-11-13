@@ -1,0 +1,137 @@
+{
+  "$schema" : "https://unpkg.com/@camunda/zeebe-element-templates-json-schema/resources/schema.json",
+  "name" : "Lark Outbound Connector",
+  "id" : "io.camunda.connectors.LARK.v1",
+  "description" : "Produce Lark message",
+  "version" : 4,
+  "category" : {
+    "id" : "connectors",
+    "name" : "Connectors"
+  },
+  "appliesTo" : [ "bpmn:Task" ],
+  "elementType" : {
+    "value" : "bpmn:ServiceTask"
+  },
+  "groups" : [ {
+    "id" : "authentication",
+    "label" : "Authentication"
+  }, {
+    "id" : "message",
+    "label" : "Message"
+  }, {
+    "id" : "output",
+    "label" : "Output mapping"
+  }, {
+    "id" : "error",
+    "label" : "Error handling"
+  }, {
+    "id" : "retries",
+    "label" : "Retries"
+  } ],
+  "properties" : [ {
+    "value" : "io.camunda:connector-lark:1",
+    "binding" : {
+      "property" : "type",
+      "type" : "zeebe:taskDefinition"
+    },
+    "type" : "Hidden"
+  }, {
+    "id" : "authentication.appId",
+    "label" : "App ID",
+    "description" : "机器人 App ID",
+    "optional" : false,
+    "feel" : "optional",
+    "group" : "authentication",
+    "binding" : {
+      "name" : "authentication.appId",
+      "type" : "zeebe:input"
+    },
+    "type" : "String"
+  }, {
+    "id" : "authentication.appSecret",
+    "label" : "App Secret",
+    "description" : "机器人 App Secret",
+    "optional" : false,
+    "feel" : "optional",
+    "group" : "authentication",
+    "binding" : {
+      "name" : "authentication.appSecret",
+      "type" : "zeebe:input"
+    },
+    "type" : "String"
+  }, {
+    "id" : "message.value",
+    "label" : "Value",
+    "description" : "Provide message value",
+    "optional" : false,
+    "constraints" : {
+      "notEmpty" : true
+    },
+    "feel" : "optional",
+    "group" : "message",
+    "binding" : {
+      "name" : "message.value",
+      "type" : "zeebe:input"
+    },
+    "type" : "String"
+  }, {
+    "id" : "resultVariable",
+    "label" : "Result variable",
+    "description" : "Name of variable to store the response in",
+    "group" : "output",
+    "binding" : {
+      "key" : "resultVariable",
+      "type" : "zeebe:taskHeader"
+    },
+    "type" : "String"
+  }, {
+    "id" : "resultExpression",
+    "label" : "Result expression",
+    "description" : "Expression to map the response into process variables",
+    "feel" : "required",
+    "group" : "output",
+    "binding" : {
+      "key" : "resultExpression",
+      "type" : "zeebe:taskHeader"
+    },
+    "type" : "Text"
+  }, {
+    "id" : "errorExpression",
+    "label" : "Error expression",
+    "description" : "Expression to handle errors. Details in the <a href=\"https://docs.camunda.io/docs/components/connectors/use-connectors/\" target=\"_blank\">documentation</a>.",
+    "feel" : "required",
+    "group" : "error",
+    "binding" : {
+      "key" : "errorExpression",
+      "type" : "zeebe:taskHeader"
+    },
+    "type" : "Text"
+  }, {
+    "id" : "retryCount",
+    "label" : "Retries",
+    "description" : "Number of retries",
+    "value" : "3",
+    "feel" : "optional",
+    "group" : "retries",
+    "binding" : {
+      "property" : "retries",
+      "type" : "zeebe:taskDefinition"
+    },
+    "type" : "String"
+  }, {
+    "id" : "retryBackoff",
+    "label" : "Retry backoff",
+    "description" : "ISO-8601 duration to wait between retries",
+    "value" : "PT0S",
+    "feel" : "optional",
+    "group" : "retries",
+    "binding" : {
+      "key" : "retryBackoff",
+      "type" : "zeebe:taskHeader"
+    },
+    "type" : "String"
+  } ],
+  "icon" : {
+    "contents" : "data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPCFET0NUWVBFIHN2ZyBQVUJMSUMgIi0vL1czQy8vRFREIFNWRyAxLjEvL0VOIiAiaHR0cDovL3d3dy53My5vcmcvR3JhcGhpY3MvU1ZHLzEuMS9EVEQvc3ZnMTEuZHRkIj4KPHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZlcnNpb249IjEuMSIgd2lkdGg9IjcwMHB4IiBoZWlnaHQ9IjcwMHB4IiBzdHlsZT0ic2hhcGUtcmVuZGVyaW5nOmdlb21ldHJpY1ByZWNpc2lvbjsgdGV4dC1yZW5kZXJpbmc6Z2VvbWV0cmljUHJlY2lzaW9uOyBpbWFnZS1yZW5kZXJpbmc6b3B0aW1pemVRdWFsaXR5OyBmaWxsLXJ1bGU6ZXZlbm9kZDsgY2xpcC1ydWxlOmV2ZW5vZGQiIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIj4KICAgIDxnPjxwYXRoIHN0eWxlPSJvcGFjaXR5OjAuOTk3IiBmaWxsPSIjMDBkNWI4IiBkPSJNIDUxNi41LDIzMi41IEMgNDg3LjA5OSwyNDIuODY0IDQ2MC43NjYsMjU4LjM2NCA0MzcuNSwyNzlDIDQxNS45MzYsMzAxLjA2NSAzOTMuOTM2LDMyMi41NjUgMzcxLjUsMzQzLjVDIDMxNS43NzcsMjQzLjc1MyAyNDEuNzc3LDE1OS43NTMgMTQ5LjUsOTEuNUMgMTQ2Ljg3OCw4OC4yOTcyIDE0Ni44NzgsODUuMTMwNSAxNDkuNSw4MkMgMjQzLjg3Nyw4MS4wMDk3IDMzOC4yMSw4MS4zNDMgNDMyLjUsODNDIDQzNy41OSw4NC45NTgzIDQ0Mi4wOSw4Ny43OTE2IDQ0Niw5MS41QyA0NzkuNTUyLDEzMy4yNyA1MDMuMDUyLDE4MC4yNyA1MTYuNSwyMzIuNSBaIi8+PC9nPgogICAgPGc+PHBhdGggc3R5bGU9Im9wYWNpdHk6MC45OTgiIGZpbGw9IiMxMzNjOWEiIGQ9Ik0gNTg3LjUsMzkxLjUgQyA1NTAuMjU3LDQ0My4xIDQ5OS45MjQsNDYzLjkzMyA0MzYuNSw0NTRDIDM4Ni4yNzQsNDQxLjMxNyAzMzcuOTQxLDQyMy44MTcgMjkxLjUsNDAxLjVDIDMyMC42MDYsMzg1LjYwNiAzNDcuMjczLDM2Ni4yNzIgMzcxLjUsMzQzLjVDIDM5My45MzYsMzIyLjU2NSA0MTUuOTM2LDMwMS4wNjUgNDM3LjUsMjc5QyA0NjAuNzY2LDI1OC4zNjQgNDg3LjA5OSwyNDIuODY0IDUxNi41LDIzMi41QyA1NjMuMzIxLDIxOS4yMyA2MDkuNjU1LDIyMC43MyA2NTUuNSwyMzdDIDY2MS44MzQsMjM5LjE2NSA2NjcuODM0LDI0MS45OTggNjczLjUsMjQ1LjVDIDY2MC45NzMsMjU4LjIzNSA2NTAuMTQsMjcyLjIzNSA2NDEsMjg3LjVDIDYyMy40MDcsMzIyLjM1MyA2MDUuNTc0LDM1Ny4wMiA1ODcuNSwzOTEuNSBaIi8+PC9nPgogICAgPGc+PHBhdGggc3R5bGU9Im9wYWNpdHk6MC45OTYiIGZpbGw9IiMzMjZmZmUiIGQ9Ik0gMjkxLjUsNDAxLjUgQyAzMzcuOTQxLDQyMy44MTcgMzg2LjI3NCw0NDEuMzE3IDQzNi41LDQ1NEMgNDk5LjkyNCw0NjMuOTMzIDU1MC4yNTcsNDQzLjEgNTg3LjUsMzkxLjVDIDU0MC4xMTgsNDc0LjM2NSA0NzEuMTE4LDUzMS4xOTggMzgwLjUsNTYyQyAyNzUuMDQyLDU5My45NDkgMTc0LjM3NSw1ODIuOTQ5IDc4LjUsNTI5QyA3MS44MzMzLDUyNC42NjcgNjUuMTY2Nyw1MjAuMzMzIDU4LjUsNTE2QyA1My4wODcxLDUxMS4zNDUgNDkuNTg3MSw1MDUuNTEyIDQ4LDQ5OC41QyA0Ni4zNTE1LDQwOS44NTkgNDYuMDE4MSwzMjEuMTkzIDQ3LDIzMi41QyA0OS4xNzE2LDIyOC4yNjIgNTIuMzM4MiwyMjcuNDI4IDU2LjUsMjMwQyAxMjQuMTQ3LDMwMS44MjIgMjAyLjQ4MSwzNTguOTg5IDI5MS41LDQwMS41IFoiLz48L2c+Cjwvc3ZnPg=="
+  }
+}
